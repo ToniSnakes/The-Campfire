@@ -5,12 +5,12 @@ body {
 
 .wrapper {
   background-color: green;
-  width: 650px;
+  width: 600px;
   height: 650px;
   margin: 0 auto;
   padding-top: 20px;
   padding-left: 180px;
-  padding-right: 180px;
+  padding-right: 230px;
 }
 
 .main {
@@ -32,21 +32,43 @@ body {
   background-color: purple;
   position: relative;
   top: -1300px;
-  left: 670px;
+  left: 610px;
   height: 650px;
-  width: 160px;
+  width: 220px;
 }
 
 .tabs {
   background-color: yellow;
-  width: 650px;
-  height: 30px;
+  width: 600px;
+  height: 50px;
 }
 
 .menus {
   background-color: orange;
-  width: 650px;
-  height: 20px;
+  width: 600px;
+  height: 35px;
   position: relative;
-  top: 600px;
+  top: 565px;
+}
+
+.inner {
+  background-color: rgb(116, 128, 255);
+  position: relative;
+  width: 396px;
+  height: 202px;
+  transform: translate(-50%,-50%);
+  top: -19%;
+  left: 50%;
+  margin: 0;
+}
+
+.outer {
+  background-color: rgb(163, 84, 255);
+  position: relative;
+  width: 594px;
+  height: 372px;
+  transform: translate(-50%,-50%);
+  top: 39%;
+  left: 50%;
+  margin: 0;
 }
