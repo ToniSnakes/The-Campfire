@@ -64,13 +64,10 @@ html {
 
 .inner {
   background-color: rgb(116, 128, 255);
-  position: relative;
-  width: 400px;
-  height: 202px;
-  transform: translate(-50%,-50%);
-  top: -19%;
-  left: 50%;
-  margin: 0;
+  width: 80%;
+  height: 60%;
+  margin: auto;
+  display: flex;
 }
 
 .outer {
@@ -79,6 +76,7 @@ html {
   width: 80%;
   margin: auto;
   align-self: center;
+  display: flex;
 }
 
 .button {
