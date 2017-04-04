@@ -68,6 +68,9 @@ html {
   height: 60%;
   margin: auto;
   display: flex;
+  flex-wrap: wrap;
+  flex: 3;
+  flex-direction: column;
 }
 
 .outer {
@@ -77,13 +80,34 @@ html {
   margin: auto;
   align-self: center;
   display: flex;
+  flex-direction: column;
 }
 
 .button {
   background-color: rgb(13, 238, 15);
-  width: 80px;
+  /*width: 80px;
   height: 18px;
   padding: 5px 10px;
-  margin: 20px 15px;
-  display: inline-block;
+  margin: auto 20px;*/
+  align-self: center;
+  width: 70%;
+  height: 40%;
+  margin: auto;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 200%;
+}
+
+.buttonStrip {
+  /*background-color: rgb(233, 200, 58);*/
+  flex: 1;
+  width: 100%;
+  display: flex;
+}
+
+.buttonSeparator {
+  /*background-color: green;*/
+  flex: 1;
+  height: 100%;
+  display: flex;
 }
