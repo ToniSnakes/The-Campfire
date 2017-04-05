@@ -112,6 +112,9 @@ html {
   border-color: white;
   border-width: 2px;
   color: white;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   /*font-size: 1vw;*/
 }
 
