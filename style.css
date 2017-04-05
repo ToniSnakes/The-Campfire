@@ -81,7 +81,8 @@ html {
   font-size: 1.5vw;
   border-bottom: groove;
   text-align: center;
-  height: auto;
+  height: 0;
+  margin: 0;
 }
 
 .menus {
@@ -100,6 +101,9 @@ html {
   flex-wrap: wrap;
   flex: 3;
   flex-direction: column;
+  border: dashed;
+  border-color: white;
+  border-width: 0.2vw;
 }
 
 .outer {
@@ -110,6 +114,9 @@ html {
   align-self: center;
   display: flex;
   flex-direction: column;
+  border: dotted;
+  border-color: white;
+  border-width: 0.4vw;
 }
 
 .button {
