@@ -10,7 +10,7 @@ html {
 }
 
 .wrapper {
-  background-color: green;
+  /*background-color: green;*/
   margin: auto;
   flex: 6;
   display: flex;
@@ -20,7 +20,7 @@ html {
 
 .filler {
   flex: 1;
-  height: 20px;
+  /*height: 20px;*/
 }
 
 .lFiller {
@@ -32,38 +32,50 @@ html {
 }
 
 .main {
-  background-color: blue;
+  /*background-color: blue;*/
   flex: 4;
   display: flex;
   flex-direction: column;
 }
 
 .logs {
-  background-color: red;
+  /*background-color: red;*/
   flex: 1;
+  border-top: inset;
+  border-color: white;
+  border-radius: 1px;
 }
 
 .resources {
-  background-color: purple;
+  /*background-color: purple;*/
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.stores {
+  /*background-color: purple;*/
+  flex: 8;
+  border-style: double;
+  border-color: white;
 }
 
 .tabs {
-  background-color: yellow;
+  /*background-color: yellow;*/
   width: 100%;
   height: 50px;
   align-self: flex-start;
 }
 
 .menus {
-  background-color: orange;
+  /*background-color: orange;*/
   width: 100%;
   height: 35px;
   align-self: flex-end;
 }
 
 .inner {
-  background-color: rgb(116, 128, 255);
+  /*background-color: rgb(116, 128, 255);*/
   width: 80%;
   height: 60%;
   margin: auto;
@@ -74,7 +86,7 @@ html {
 }
 
 .outer {
-  background-color: rgb(163, 84, 255);
+  /*background-color: rgb(163, 84, 255);*/
   height: 60%;
   width: 80%;
   margin: auto;
@@ -84,7 +96,7 @@ html {
 }
 
 .button {
-  background-color: rgb(13, 238, 15);
+  /*background-color: rgb(13, 238, 15);*/
   /*width: 80px;
   height: 18px;
   padding: 5px 10px;
@@ -96,6 +108,11 @@ html {
   text-align: center;
   vertical-align: middle;
   line-height: 200%;
+  border-style: solid;
+  border-color: white;
+  border-width: 2px;
+  color: white;
+  /*font-size: 1vw;*/
 }
 
 .buttonStrip {
