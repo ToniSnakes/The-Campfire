@@ -61,9 +61,21 @@ html {
 }
 
 .supply {
+  display: flex;
+}
+
+.type {
   color: white;
   font-size: 1.2vw;
   padding: 0.01em 0.2em;
+  align-self: flex-start;
+}
+
+.quantity {
+  color: white;
+  font-size: 1.2vw;
+  padding: 0.01em 0.2em;
+  align-self: flex-end;
 }
 
 .tabs {
@@ -155,12 +167,4 @@ html {
 
 .hover {
   text-decoration: underline;
-}
-
-.cooldown {
-  color: black;
-  flex: 1;
-  width: 100%;
-  background-color: white;
-  z-index: 10;
 }
