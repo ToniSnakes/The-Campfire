@@ -135,6 +135,8 @@ html {
   border-width: 2px;
   color: white;
   font-size: 1.4vw;
+  display: flex;
+  flex-direction: column;
 }
 
 .buttonStrip {
@@ -149,4 +151,16 @@ html {
   flex: 1;
   height: 100%;
   display: flex;
+}
+
+.hover {
+  text-decoration: underline;
+}
+
+.cooldown {
+  color: black;
+  flex: 1;
+  width: 100%;
+  background-color: white;
+  z-index: 10;
 }
