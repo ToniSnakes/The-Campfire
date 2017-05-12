@@ -88,13 +88,21 @@ html {
 
 .tab {
   flex: 1;
-  padding: 1em 0;
+  padding: 0.6em 0;
   color: white;
   font-size: 1.5vw;
   border-bottom: groove;
+  border-left: dashed;
+  border-right: dashed;
+  border-left-width: thin;
+  border-right-width: thin;
   text-align: center;
-  height: 0;
+  height: 1em;
   margin: 0;
+}
+
+.tab.hover {
+  border-bottom-width: thick;
 }
 
 .menus {
@@ -165,6 +173,20 @@ html {
   display: flex;
 }
 
-.hover {
+.button.hover {
   text-decoration: underline;
+}
+
+.screen.hidden {
+  display: none;
+}
+
+.forest {
+  flex: 1;
+  display: flex;
+}
+
+.land {
+  flex: 1;
+  display: flex;
 }

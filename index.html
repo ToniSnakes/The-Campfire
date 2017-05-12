@@ -11,13 +11,11 @@
     <div class="logs"></div>
     <div class="main">
       <div class="tabs">
-        <div class="tab">A Campfire</div>
-        <!--
-        <div class="tab">A Forest</div>
-        <div class="tab">Empty Land</div>
-      -->
+        <div class="tab" data-tab="1">A Campfire</div>
+        <div class="tab" data-tab="2">A Forest</div>
+        <div class="tab" data-tab="3">Empty Land</div>
       </div>
-      <div class="outer">
+      <div class="outer screen" data-screen="1">
         <div class="buttonStrip">
           <div class="buttonSeparator">
             <div class="button">placeholder</div>
@@ -87,6 +85,8 @@
           </div>
         </div>
       </div>
+      <div class="forest screen hidden" data-screen="2"></div>
+      <div class="land screen hidden" data-screen="3"></div>
       <div class="menus"></div>
     </div>
     <div class="resources">
