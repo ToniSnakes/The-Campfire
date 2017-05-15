@@ -19,7 +19,9 @@ html {
 }
 
 .filler {
+  /*background-color: red;*/
   flex: 1;
+  display: flex;
   /*height: 20px;*/
 }
 
@@ -189,4 +191,12 @@ html {
 .land {
   flex: 1;
   display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.bigger {
+  flex: 2;
 }
