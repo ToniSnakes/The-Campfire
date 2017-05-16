@@ -200,3 +200,9 @@ html {
 .bigger {
   flex: 2;
 }
+
+.built {
+  color: black;
+  background-color: white;
+  transition: 0.3s;
+}
