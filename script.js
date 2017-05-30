@@ -6,9 +6,12 @@ const tabs = document.querySelectorAll('.tab');
 const screens = document.querySelectorAll('.screen');
 const huts = document.querySelectorAll('.hut');
 const farms = document.querySelectorAll('.farm');
+const strips = document.querySelectorAll('.buttonStrip');
 var cooldown = [];
 var stores = [];
 var production = [];
+var hutIdx = 5;
+var farmIdx = 20;
 
 function getIndex (e, list) {
   for (i = 0; i < list.length; ++i) {
@@ -59,6 +62,14 @@ function buildFarm (e) {
     stores[1] += 5;
     quantities.forEach(qtt => updateQuantity(qtt));
     console.log("built farm");
+    if (farmIdx == 29) {
+      farmIdx = 32;
+    }
+    if (farmIdx < 36) {
+      strips[++farmIdx].insertAdjacentHTML('beforeend', '<div class="button farm">farm</div>');
+      updateButtonList();
+      updateFarmList();
+    }
   }
   //console.log(this);
 }
@@ -71,8 +82,37 @@ function buildHut (e) {
     stores[2] += 4;
     quantities.forEach(qtt => updateQuantity(qtt));
     console.log("built hut");
+    if (hutIdx == 9) {
+      hutIdx = 14;
+    }
+    if (hutIdx < 19) {
+      strips[++hutIdx].insertAdjacentHTML('beforeend', '<div class="button hut">hut</div>');
+      updateButtonList();
+      updateHutList();
+    }
   }
   //console.log(this);
+}
+
+function updateButtonList () {
+  const buttons = document.querySelectorAll('.button');
+  buttons.forEach(button => button.addEventListener('mouseenter', () => {
+    button.classList.add('hover');
+  }));
+  buttons.forEach(button => button.addEventListener('mouseleave', () => {
+    button.classList.remove('hover');
+  }));
+  buttons.forEach(button => button.addEventListener('click', activateButton));
+}
+
+function updateHutList () {
+  const huts = document.querySelectorAll('.hut');
+  huts.forEach(hut => hut.addEventListener('click', buildHut));
+}
+
+function updateFarmList () {
+  const farms = document.querySelectorAll('.farm');
+  farms.forEach(farm => farm.addEventListener('click', buildFarm));
 }
 
 buttons.forEach(button => button.addEventListener('mouseenter', () => {
@@ -96,6 +136,8 @@ quantities.forEach(qtt => {
   production[getIndex(qtt,quantities)] = 0;
 });
 stores[2] = 1;
+stores[0] = 1000;
+stores[1] = 500;
 run();
 
 farms.forEach(farm => farm.addEventListener('click', buildFarm));
