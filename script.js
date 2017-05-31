@@ -7,11 +7,15 @@ const screens = document.querySelectorAll('.screen');
 const huts = document.querySelectorAll('.hut');
 const farms = document.querySelectorAll('.farm');
 const strips = document.querySelectorAll('.buttonStrip');
+const log = document.querySelector('.logs');
+var messages = document.querySelectorAll('.logMessage');
 var cooldown = [];
 var stores = [];
 var production = [];
 var hutIdx = 5;
 var farmIdx = 20;
+var maxLogs = 22;
+var charPerLogLine = 24;
 
 function getIndex (e, list) {
   for (i = 0; i < list.length; ++i) {
@@ -25,6 +29,16 @@ function getIndex (e, list) {
 function activateButton (e) {
   var idx = getIndex(this,buttons);
   console.log(idx);
+  if (this.getAttribute('data-building') == "campfire") {
+    log.insertAdjacentHTML('afterbegin', '<div class="logMessage" data-history=0>You add logs to the fire two lines of text</div>');
+    var lines = 2;
+    updateLogs(lines);
+  }
+  if (this.getAttribute('data-building') == "trapper") {
+    log.insertAdjacentHTML('afterbegin', '<div class="logMessage" data-history=0>One line of text</div>');
+    var lines = 1;
+    updateLogs(lines);
+  }
 }
 
 function run () {
@@ -113,6 +127,21 @@ function updateHutList () {
 function updateFarmList () {
   const farms = document.querySelectorAll('.farm');
   farms.forEach(farm => farm.addEventListener('click', buildFarm));
+}
+
+function updateLogs (lines) {
+  messages.forEach(message => {
+    var age = message.getAttribute('data-history')/1 + lines;
+    if (age >= maxLogs) {
+      message.remove();
+    }
+    else {
+      message.setAttribute('data-history', age);
+      message.style.opacity = (maxLogs - age) / maxLogs;
+      //console.log(message);
+    }
+  });
+  messages = document.querySelectorAll('.logMessage');
 }
 
 buttons.forEach(button => button.addEventListener('mouseenter', () => {

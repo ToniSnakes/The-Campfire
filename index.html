@@ -8,7 +8,10 @@
 <body>
   <div class="filler lFiller"></div>
   <div class="wrapper">
-    <div class="logs"></div>
+    <div class="filler column">
+      <div class="filler"></div>
+      <div class="logs"></div>
+    </div>
     <div class="main">
       <div class="tabs">
         <div class="tab" data-tab="1">A Campfire</div>
@@ -30,48 +33,37 @@
         <div class="inner">
           <div class="buttonStrip">
             <div class="buttonSeparator">
-              <div class="button" id="library">library</div>
+              <div class="button" data-building="library">library</div>
             </div>
             <div class="buttonSeparator">
-              <div class="button" id="crafter">crafter</div>
+              <div class="button" data-building="crafter">crafter</div>
             </div>
             <div class="buttonSeparator">
-              <div class="button" id="laboratory">laboratory</div>
+              <div class="button" data-building="laboratory">laboratory</div>
             </div>
           </div>
           <div class="buttonStrip">
             <div class="buttonSeparator">
-              <div class="button" id="trapper">trapper</div>
+              <div class="button" data-building="trapper">trapper</div>
             </div>
             <div class="buttonSeparator">
-              <div class="button" id="campfire">campfire</div>
+              <div class="button" data-building="campfire">campfire</div>
             </div>
             <div class="buttonSeparator">
-              <div class="button" id="carpenter">carpenter</div>
+              <div class="button" data-building="carpenter">carpenter</div>
             </div>
           </div>
           <div class="buttonStrip">
             <div class="buttonSeparator">
-              <div class="button" id="treasury">treasury</div>
+              <div class="button" data-building="treasury">treasury</div>
             </div>
             <div class="buttonSeparator">
-              <div class="button" id="fletcher">fletcher</div>
+              <div class="button" data-building="fletcher">fletcher</div>
             </div>
             <div class="buttonSeparator">
-              <div class="button" id="alchemists">alchemists</div>
+              <div class="button" data-building="alchemists">alchemists</div>
             </div>
           </div>
-          <!--
-          <div class="button" id="library">library</div>
-          <div class="button" id="crafter">crafter</div>
-          <div class="button" id="laboratory">laboratory</div>
-          <div class="button" id="trapper">trapper</div>
-          <div class="button" id="campfire">campfire</div>
-          <div class="button" id="carpenter">carpenter</div>
-          <div class="button" id="treasury">treasury</div>
-          <div class="button" id="fletcher">fletcher</div>
-          <div class="button" id="alchemists">alchemists</div>
-        -->
         </div>
         <div class="buttonStrip">
           <div class="buttonSeparator">
@@ -190,15 +182,15 @@
       <div class="stores">
         <div class="supply">
           <div class="type">wood:</div>
-          <div class="quantity" id="wood">0</div>
+          <div class="quantity" data-resource="wood">0</div>
         </div>
         <div class="supply">
           <div class="type">food:</div>
-          <div class="quantity" id="food">0</div>
+          <div class="quantity" data-resource="food">0</div>
         </div>
         <div class="supply">
           <div class="type">people:</div>
-          <div class="quantity" id="people">0</div>
+          <div class="quantity" data-resource="people">0</div>
         </div>
       </div>
       <div class="filler"></div>

@@ -42,10 +42,11 @@ html {
 
 .logs {
   /*background-color: red;*/
-  flex: 1;
-  border-top: inset;
+  flex: 8;
+  flex-direction: column;
+  /*border-top: inset;
   border-color: white;
-  border-radius: 1px;
+  border-radius: 1px;*/
 }
 
 .resources {
@@ -205,4 +206,11 @@ html {
   color: black;
   background-color: white;
   transition: 0.3s;
+}
+
+.logMessage {
+  color: white;
+  width: 100%;
+  font-size: 1.2vw;
+  padding: 0.2em 0;
 }
