@@ -8,6 +8,7 @@ const huts = document.querySelectorAll('.hut');
 const farms = document.querySelectorAll('.farm');
 const strips = document.querySelectorAll('.buttonStrip');
 const log = document.querySelector('.logs');
+const actions = document.querySelectorAll('.action');
 var messages = document.querySelectorAll('.logMessage');
 var cooldown = [];
 var stores = [];
@@ -30,14 +31,13 @@ function activateButton (e) {
   var idx = getIndex(this,buttons);
   console.log(idx);
   if (this.getAttribute('data-building') == "campfire") {
-    log.insertAdjacentHTML('afterbegin', '<div class="logMessage" data-history=0>You add logs to the fire two lines of text</div>');
-    var lines = 2;
-    updateLogs(lines);
+    var message = "You add logs to the fire two lines of text";
+    updateLogs(message);
+    /*this.style.transitionDuration = "0.001s";
+    this.classList.add('cooldown');*/
   }
-  if (this.getAttribute('data-building') == "trapper") {
-    log.insertAdjacentHTML('afterbegin', '<div class="logMessage" data-history=0>One line of text</div>');
-    var lines = 1;
-    updateLogs(lines);
+  if (this.getAttribute('data-building') == "mechanic") {
+    updateLogs("One line of text");
   }
 }
 
@@ -129,7 +129,10 @@ function updateFarmList () {
   farms.forEach(farm => farm.addEventListener('click', buildFarm));
 }
 
-function updateLogs (lines) {
+function updateLogs (message) {
+  var lines = Math.floor(message.length/25) + 1;
+  var element = '<div class="logMessage" data-history=0>' + message + '</div>';
+  log.insertAdjacentHTML('afterbegin', element);
   messages.forEach(message => {
     var age = message.getAttribute('data-history')/1 + lines;
     if (age >= maxLogs) {
@@ -138,7 +141,6 @@ function updateLogs (lines) {
     else {
       message.setAttribute('data-history', age);
       message.style.opacity = (maxLogs - age) / maxLogs;
-      //console.log(message);
     }
   });
   messages = document.querySelectorAll('.logMessage');
@@ -172,3 +174,12 @@ run();
 farms.forEach(farm => farm.addEventListener('click', buildFarm));
 
 huts.forEach(hut => hut.addEventListener('click', buildHut));
+
+/*actions.forEach(action => action.addEventListener('transitionend', () => {
+  console.log(action.classList);
+  if (action.classList.contains('cooldown')) {
+    var cooldown = action.getAttribute('data-cooldown');
+    action.style.transitionDuration = cooldown;
+    action.classList.remove('cooldown');
+  }
+}));*/

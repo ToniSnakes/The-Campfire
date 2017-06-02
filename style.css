@@ -214,3 +214,8 @@ html {
   font-size: 1.2vw;
   padding: 0.2em 0;
 }
+
+.cooldown {
+  background-color: white;
+  color: black;
+}
