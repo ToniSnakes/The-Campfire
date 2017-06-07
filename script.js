@@ -23,8 +23,10 @@ var hutIdx = 5;
 var farmIdx = 20;
 var maxLogs = 22;
 var charPerLogLine = 24;
+var hutNr = 0;
+var farmNr = 0;
 
-var buildReq = [0,1,1,1,1,1,3,2,1,2,3,1,2,2,2,2,4];
+var buildReq = [0,1,1,1,1,1,3,2,1,2,3,1,2,2,3,2,4];
 var buildCurr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 function getIndex (e, list) {
@@ -84,6 +86,12 @@ function switchScreen (e) {
 }
 
 function buildFarm () {
+  if (!farmNr) {
+    console.log("W");
+    ++buildCurr[14];
+    checkMill();
+  }
+  ++farmNr;
   if (stores[0] >= 40) {
     stores[0] -= 40;
     stores[1] += 5;
@@ -93,7 +101,7 @@ function buildFarm () {
       farmIdx = 32;
     }
     if (farmIdx < 36) {
-      strips[++farmIdx].insertAdjacentHTML('beforeend', '<div class="button farm">farm</div>');
+      strips[++farmIdx].insertAdjacentHTML('beforeend', '<div class="button farm" data-building="Farm" data-buildID="12">farm</div>');
       updateButtonList();
       updateFarmList();
     }
@@ -102,6 +110,7 @@ function buildFarm () {
 }
 
 function buildHut () {
+  ++hutNr;
   if (stores[0] >= 20 && stores[1] >= 4) {
     stores[0] -= 20;
     stores[1] -= 4;
@@ -233,15 +242,135 @@ function buildCarpenter () {
   separators[10].insertAdjacentHTML('afterbegin', '<div class="button" data-building="Fletcher" data-buildID="2">fletcher</div>');
   //++buildCurr[2];
   buildCurr = buildCurr.map(i => i + 1);
+  --buildCurr[0];
+  --buildCurr[4];
+  --buildCurr[5];
   tab.insertAdjacentHTML('beforeend', '<div class="tab" data-tab="2">A Forest</div>');
   main.insertAdjacentHTML('beforeend', '<div class="forest screen hidden" data-screen="2"><div class="filler column"><div class="buttonStrip"><div class="button hut" data-building="Hut" data-buildID="11">hut</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler bigger column"><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"><div class="button" data-building="Forager" data-buildID="8">forager</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div></div>');
-  tab.insertAdjacentHTML('beforeend', '<div class="tab" data-tab="3">Empty Land</div>');
-  main.insertAdjacentHTML('beforeend', '<div class="land screen hidden" data-screen="3"><div class="filler column"><div class="buttonStrip"><div class="button farm" data-building="Farm" data-buildID="12">farm</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column bigger"><div class="filler column" style="flex: 3"><div class="buttonStrip"><div class="button" data-building="Fisher" data-buildID="13">fisher</div></div><div class="buttonStrip"><div class="button" data-building="Mill" data-buildID="14">mill</div></div><div class="buttonStrip"><div class="button" data-building="Storage" data-buildID="15">storage</div></div></div><div class="filler" style="flex: 2"><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div></div></div></div></div>')
   main.appendChild(main.childNodes[9]);
   console.log(main.childNodes);
   updateTabList();
   updateButtonList();
   updateHutList();
-  updateFarmList();
   updateLogs("You find a carpenter, he says he can build things");
+}
+
+function buildCrafter () {
+  ++buildCurr[12];
+  ++buildCurr[13];
+  ++buildCurr[6];
+  ++buildCurr[16];
+  ++buildCurr[10];
+  checkKeep();
+  tab.insertAdjacentHTML('beforeend', '<div class="tab" data-tab="3">Empty Land</div>');
+  main.insertAdjacentHTML('beforeend', '<div class="land screen hidden" data-screen="3"><div class="filler column"><div class="buttonStrip"><div class="button farm" data-building="Farm" data-buildID="12">farm</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column bigger"><div class="filler column" style="flex: 3"><div class="buttonStrip"><div class="button" data-building="Fisher" data-buildID="13">fisher</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler" style="flex: 2"><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div></div></div></div></div>');
+  main.appendChild(main.childNodes[11]);
+  updateLogs("You find someone who says he can craft various tools");
+  updateTabList();
+  updateButtonList();
+  updateFarmList();
+  checkLeatherworker();
+}
+
+function buildFletcher () {
+  ++buildCurr[7];
+  ++buildCurr[16];
+  checkKeep();
+  strips[11].insertAdjacentHTML('beforeend','<div class="button" data-building="Hunter" data-buildID="7">hunter</div>');
+  updateLogs("You can now make arrows, but you still need someone who knows how to use them");
+  updateButtonList();
+}
+
+function buildMechanic () {
+  ++buildCurr[9];
+  ++buildCurr[14];
+  ++buildCurr[16];
+  strips[13].insertAdjacentHTML('beforeend', '<div class="button" data-building="Trapper" data-buildID="9">trapper</div>');
+  checkMill();
+  updateLogs("This crazy-looking woman says she has ideas for how to build more complex things");
+  updateButtonList();
+  checkKeep();
+}
+
+function buildKeep () {
+  ++buildCurr[5];
+  separators[13].insertAdjacentHTML('beforeend','<div class="button" data-building="InnerWall" buildID="5">inner wall</div>');
+  updateLogs("This large wooden structure is both impressive and relatively defensible in case of an attack...");
+  updateButtonList();
+}
+
+function buildInnerWall () {
+  var inner = document.querySelector('.inner');
+  inner.style.border = "dashed white 0.2vw";
+  updateLogs("This extra fortification offers an extra layer of protection against larger threats");
+}
+
+function buildForager () {
+  updateLogs("You now have someone to gather food from the forest, such as it is");
+}
+
+function buildTrapper () {
+  ++buildCurr[10];
+  checkLeatherworker();
+  updateLogs("The crazy mechanic figured out a contraption able to catch animals");
+}
+
+function buildHunter () {
+  ++buildCurr[6];
+  ++buildCurr[10];
+  checkLeatherworker();
+  strips[10].insertAdjacentHTML('beforeend', '<div class="button" data-building="Smokehouse" data-buildID="6">smokehouse</div>');
+  updateLogs("Not surprisingly, larger animals give more meat, but are harder to catch. Good thing you have arrows");
+  updateButtonList();
+}
+
+function buildSmokehouse () {
+  updateLogs("The ability to preserve meat esentially means it can be better distributed, meaning more food");
+}
+
+function buildLeatherworker () {
+  updateLogs("Dead animals can now be harvested for even more resources");
+}
+
+function buildFisher () {
+  updateLogs("More ways of providing food for your people are always welcome");
+}
+
+function buildMill () {
+  ++buildCurr[15];
+  strips[32].insertAdjacentHTML('beforeend','<div class="button" data-building="Storage" data-buildID="15">storage</div>');
+  updateLogs("The crazy mechanic came up with an even more ambitious project, allowing you to process food from farms");
+  updateButtonList();
+}
+
+function buildStorage () {
+  updateLogs("With dedicated storage space, you can now have more resources at once");
+}
+
+function checkKeep () {
+  if (buildCurr[16] == buildReq[16]) {
+    while (separators[7].hasChildNodes()) {
+      separators[7].removeChild(separators[7].lastChild);
+    }
+    separators[7].insertAdjacentHTML('beforeend', '<div class="button" data-building="Keep" data-buildID="16">keep</div>');
+    setTimeout(function() {updateLogs("With all these people now following you, better accomodations are in order");}, 500);
+  }
+}
+
+function checkLeatherworker () {
+  if (buildCurr[10] > buildReq[10]) {
+    buildCurr[10] = buildReq[10];
+  }
+  else
+  if (buildCurr[10] == buildReq[10]) {
+    strips[14].insertAdjacentHTML('beforeend', '<div class="button" data-building="Leatherworker" data-buildID="10">leatherworker</div>');
+    updateButtonList();
+  }
+}
+
+function checkMill () {
+  if (buildCurr[14] == buildReq[14]) {
+    strips[31].insertAdjacentHTML('beforeend', '<div class="button" data-building="Mill" data-buildID="14">mill</div>');
+    updateButtonList();
+  }
 }
