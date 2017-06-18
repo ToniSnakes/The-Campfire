@@ -15,19 +15,60 @@ var tab = document.querySelector('.tabs');
 var tabs = document.querySelectorAll('.tab');
 var columns = document.querySelectorAll('.column');
 var main = document.querySelector('.main');
+var store = document.querySelectorAll('.stores');
 
 var cooldown = [];
-var stores = [];
-var production = [];
 var hutIdx = 5;
 var farmIdx = 20;
-var maxLogs = 22;
+var maxLogs = 20;
 var charPerLogLine = 24;
 var hutNr = 0;
 var farmNr = 0;
 
 var buildReq = [0,1,1,1,1,1,3,2,1,2,3,1,2,2,3,2,4];
 var buildCurr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+var stores = [0,0,0,0,0,0,0,5000];
+var production = [0,0,0,0,0,0,0,0];
+var resReq = [[-1,0,0,0,0,0,0,0], //campfire
+              [0,200,0,0,0,0,0,0], //crafter
+              [0,300,0,0,0,0,50,0], //fletcher
+              [0,400,0,0,0,0,0,0], //mechanic
+              [0,10,0,0,0,0,0,0], //carpenter
+              [0,10000,0,0,0,0,0,0], //inner wall
+              [0,1000,500,0,0,0,0,0], //smokehouse
+              [0,350,150,0,0,0,0,0], //hunter
+              [0,100,0,0,0,0,0,0], //forager
+              [0,500,200,0,0,0,0,0], //trapper
+              [0,750,0,0,300,0,0,0], //leatherworker
+              [-2,50,0,0,0,0,0,0], //hut
+              [0,200,0,0,0,0,0,0], //farm
+              [0,500,0,0,0,0,0,0], //fisher
+              [0,2000,1000,0,0,0,0,0], //mill
+              [0,3000,0,0,0,0,0,-15000], //storage
+              [0,15000,0,3000,0,0,0,0], //keep
+              ];
+var resNames = ['people','wood','food','cured meat', 'fur', 'leather', 'bones', 'cap'];
+var resNr = 7;
+var foodMod = 0;
+var upProd = [[0,0,0,0,0,0,0,0], //campfire
+              [0,0,0,0,0,0,0,0], //crafter
+              [0,0,0,0,0,0,0,0], //fletcher
+              [0,0,0,0,0,0,0,0], //mechanic
+              [0,0,0,0,0,0,0,0], //carpenter
+              [0,0,0,0,0,0,0,0], //inner wall
+              [0,0,0,5,0,0,0,0], //smokehouse
+              [0,0,20,0,5,0,2,0], //hunter
+              [0,0,2,0,0,0,0,0], //forager
+              [0,0,10,0,2,0,1,0], //trapper
+              [0,0,0,0,-2,1,0,0], //leatherworker
+              [0,0,0,0,0,0,0,0], //hut
+              [0,0,5,0,0,0,0,0], //farm
+              [0,0,0,0,0,0,0,0], //fisher
+              [0,0,0,0,0,0,0,0], //mill
+              [0,0,0,0,0,0,0,0], //storage
+              [0,0,0,0,0,0,0,0], //keep
+              ];
 
 function getIndex (e, list) {
   for (i = 0; i < list.length; ++i) {
@@ -39,42 +80,51 @@ function getIndex (e, list) {
 }
 
 function activateButton (e) {
-  //var idx = getIndex(this,buttons);
-  //console.log(idx);
   var bid = this.getAttribute('data-buildID');
-  console.log(buildCurr);
-  console.log(buildReq);
-  console.log(bid);
-  if (this.getAttribute('data-building') && !this.classList.contains('built') && buildCurr[bid] == buildReq[bid]) {
+  if (this.getAttribute('data-building') && !this.classList.contains('built') && checkReq(bid)) {
+    for (var i = 0; i <= resNr; ++i) {
+      stores[i] -= resReq[bid][i];
+      production[i] += upProd[bid][i];
+    }
+    if (this.getAttribute('data-building') != 'Campfire') {
+      updateStores();
+    }
     this.classList.add('built');
-    console.log(this.classList);
     var functionName = "build" + this.getAttribute('data-building') + "()";
     var buildFunction = new Function(functionName);
     buildFunction();
   }
-  if (this.getAttribute('data-building') == "Mechanic") {
-    updateLogs("One line of text");
-  }
 }
 
 function run () {
-  production[0] = stores[2];
-  quantities.forEach(qtt => updateProduction(qtt));
-  quantities.forEach(qtt => updateQuantity(qtt));
+  production[1] = stores[0];
+  stores[2] += Math.floor(production[2] * foodMod);
+  for (var i = 0; i < resNr; ++i) {
+    updateProduction(i);
+    if (stores[i] > stores[7]) {
+      stores[i] = stores[7];
+    }
+  }
+  updateStores();
   setTimeout(run, 1000);
 }
 
-function updateProduction (qtt) {
-  idx = getIndex(qtt,quantities);
+function updateProduction (idx) {
   stores[idx] += production[idx];
 }
 
-function updateQuantity (qtt) {
-  idx = getIndex(qtt,quantities);
-  qtt.innerHTML = Math.floor(stores[idx]);
+function updateStores () {
+  clearParent(store[0]);
+  resDisplay(stores, store[0]);
 }
 
 function switchScreen (e) {
+  tabs.forEach(tab => {
+    tab.classList.remove('active');
+    tab.classList.remove('hover');
+  });
+  this.classList.add('hover');
+  this.classList.add('active');
   screens.forEach(screen => {
     if (this.getAttribute("data-tab") == screen.getAttribute("data-screen")) {
       screen.classList.remove('hidden');
@@ -87,55 +137,46 @@ function switchScreen (e) {
 
 function buildFarm () {
   if (!farmNr) {
-    console.log("W");
     ++buildCurr[14];
     checkMill();
   }
   ++farmNr;
-  if (stores[0] >= 40) {
-    stores[0] -= 40;
-    stores[1] += 5;
-    quantities.forEach(qtt => updateQuantity(qtt));
-    console.log("built farm");
-    if (farmIdx == 29) {
-      farmIdx = 32;
-    }
-    if (farmIdx < 36) {
-      strips[++farmIdx].insertAdjacentHTML('beforeend', '<div class="button farm" data-building="Farm" data-buildID="12">farm</div>');
-      updateButtonList();
-      updateFarmList();
-    }
+  resReq[12][1] += 200;
+  if (farmIdx == 29) {
+  farmIdx = 32;
   }
-  //console.log(this);
+  if (farmIdx < 36) {
+    strips[++farmIdx].insertAdjacentHTML('beforeend', '<div class="button farm" data-building="Farm" data-buildID="12">farm</div>');
+    updateButtonList();
+    updateFarmList();
+  }
 }
 
 function buildHut () {
   ++hutNr;
-  if (stores[0] >= 20 && stores[1] >= 4) {
-    stores[0] -= 20;
-    stores[1] -= 4;
-    stores[2] += 4;
-    quantities.forEach(qtt => updateQuantity(qtt));
-    //console.log("built hut");
-    if (hutIdx == 9) {
-      hutIdx = 14;
-    }
-    if (hutIdx < 19) {
-      strips[++hutIdx].insertAdjacentHTML('beforeend', '<div class="button hut" data-building="Hut" data-buildID="11">hut</div>');
-      updateButtonList();
-      updateHutList();
-    }
+  resReq[11][1] += 50;
+  if (hutIdx == 9) {
+    hutIdx = 14;
   }
-  //console.log(this);
+  if (hutIdx < 19) {
+    strips[++hutIdx].insertAdjacentHTML('beforeend', '<div class="button hut" data-building="Hut" data-buildID="11">hut</div>');
+    updateButtonList();
+    updateHutList();
+  }
 }
 
 function updateButtonList () {
   buttons = document.querySelectorAll('.button');
   buttons.forEach(button => button.addEventListener('mouseenter', () => {
     button.classList.add('hover');
+    if (!button.classList.contains('built')) {
+      clearParent(store[1]);
+      resDisplay(resReq[button.getAttribute('data-buildID')], store[1]);
+    }
   }));
   buttons.forEach(button => button.addEventListener('mouseleave', () => {
     button.classList.remove('hover');
+    clearParent(store[1]);
   }));
   buttons.forEach(button => button.addEventListener('click', activateButton));
   strips = document.querySelectorAll('.buttonStrip');
@@ -143,12 +184,10 @@ function updateButtonList () {
 
 function updateHutList () {
   huts = document.querySelectorAll('.hut');
-  //huts.forEach(hut => hut.addEventListener('click', buildHut));
 }
 
 function updateFarmList () {
   farms = document.querySelectorAll('.farm');
-  //farms.forEach(farm => farm.addEventListener('click', buildFarm));
 }
 
 function updateLogs (message) {
@@ -174,7 +213,9 @@ function updateTabList () {
     tab.classList.add('hover');
   }));
   tabs.forEach(tab => tab.addEventListener('mouseleave', () => {
-    tab.classList.remove('hover');
+    if (!tab.classList.contains('active')) {
+      tab.classList.remove('hover');
+    }
   }));
   tabs.forEach(tab => tab.addEventListener('click', switchScreen));
   screens = document.querySelectorAll('.screen');
@@ -192,55 +233,33 @@ tabs.forEach(tab => tab.addEventListener('mouseenter', () => {
   tab.classList.add('hover');
 }));
 tabs.forEach(tab => tab.addEventListener('mouseleave', () => {
-  tab.classList.remove('hover');
+  if (!tab.classList.contains('active')) {
+    tab.classList.remove('hover');
+  }
 }));
 tabs.forEach(tab => tab.addEventListener('click', switchScreen));
 
-run();
-
-//farms.forEach(farm => farm.addEventListener('click', buildFarm));
-
-//huts.forEach(hut => hut.addEventListener('click', buildHut));
-
-/*actions.forEach(action => action.addEventListener('transitionend', () => {
-  console.log(action.classList);
-  if (action.classList.contains('cooldown')) {
-    var cooldown = action.getAttribute('data-cooldown');
-    action.style.transitionDuration = cooldown;
-    action.classList.remove('cooldown');
-  }
-}));*/
-
-
 function buildCampfire () {
-  tab.insertAdjacentHTML('afterbegin', '<div class="tab" data-tab="1">A Campfire</div>');
+  tab.insertAdjacentHTML('afterbegin', '<div class="tab active hover" data-tab="1">A Campfire</div>');
   updateTabList();
   columns[0].insertAdjacentHTML('afterbegin', '<div class="filler"></div><div class="logs"></div>');
   log = document.querySelector('.logs');
   updateLogs("You get a fire started");
   setTimeout(function() {updateLogs("You figure it should be able to keep you warm");}, 1000);
-  columns[1].insertAdjacentHTML('afterbegin', '<div class="filler"></div><div class="stores"><div class="supply"><div class="type">wood:</div><div class="quantity" data-resource="wood">0</div></div><div class="supply"><div class="type">food:</div><div class="quantity" data-resource="food">0</div></div><div class="supply"><div class="type">people:</div><div class="quantity" data-resource="people">0</div></div></div><div class="filler"></div>');
+  columns[1].insertAdjacentHTML('afterbegin', '<div class="filler bigger"></div><div class="stores"></div><div class="stores"></div><div class="filler bigger"></div>');
   quantities = document.querySelectorAll('.quantity');
-  quantities.forEach(qtt => {
-    stores[getIndex(qtt,quantities)] = 0;
-    production[getIndex(qtt,quantities)] = 0;
-  });
-  stores[2] = 1;
-  stores[0] = 1000;
-  stores[1] = 500;
-  setTimeout(function() {updateLogs("You start gethering wood");}, 3000);
+  store = document.querySelectorAll('.stores');
+  setTimeout(function() {updateLogs("You start gathering wood");}, 3000);
   separators[8].insertAdjacentHTML('afterbegin', '<div class="button" data-building="Carpenter" data-buildID="4">carpenter</div>');
   ++buildCurr[4];
   updateButtonList();
+  run();
 }
 
 function buildCarpenter () {
   separators[4].insertAdjacentHTML('afterbegin', '<div class="button" data-building="Crafter" data-buildID="1">crafter</div>');
-  //++buildCurr[1];
   separators[6].insertAdjacentHTML('afterbegin', '<div class="button" data-building="Mechanic" data-buildID="3">mechanic</div>');
-  //++buildCurr[3];
   separators[10].insertAdjacentHTML('afterbegin', '<div class="button" data-building="Fletcher" data-buildID="2">fletcher</div>');
-  //++buildCurr[2];
   buildCurr = buildCurr.map(i => i + 1);
   --buildCurr[0];
   --buildCurr[4];
@@ -248,7 +267,6 @@ function buildCarpenter () {
   tab.insertAdjacentHTML('beforeend', '<div class="tab" data-tab="2">A Forest</div>');
   main.insertAdjacentHTML('beforeend', '<div class="forest screen hidden" data-screen="2"><div class="filler column"><div class="buttonStrip"><div class="button hut" data-building="Hut" data-buildID="11">hut</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler bigger column"><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"><div class="button" data-building="Forager" data-buildID="8">forager</div></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div><div class="filler column"><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div><div class="buttonStrip"></div></div></div>');
   main.appendChild(main.childNodes[9]);
-  console.log(main.childNodes);
   updateTabList();
   updateButtonList();
   updateHutList();
@@ -294,7 +312,7 @@ function buildMechanic () {
 
 function buildKeep () {
   ++buildCurr[5];
-  separators[13].insertAdjacentHTML('beforeend','<div class="button" data-building="InnerWall" buildID="5">inner wall</div>');
+  separators[13].insertAdjacentHTML('beforeend','<div class="button" data-building="InnerWall" data-buildID="5">inner wall</div>');
   updateLogs("This large wooden structure is both impressive and relatively defensible in case of an attack...");
   updateButtonList();
 }
@@ -325,6 +343,7 @@ function buildHunter () {
 }
 
 function buildSmokehouse () {
+  foodMod += 0.3;
   updateLogs("The ability to preserve meat esentially means it can be better distributed, meaning more food");
 }
 
@@ -333,10 +352,12 @@ function buildLeatherworker () {
 }
 
 function buildFisher () {
+  foodMod += 0.2;
   updateLogs("More ways of providing food for your people are always welcome");
 }
 
 function buildMill () {
+  foodMod += 0.5;
   ++buildCurr[15];
   strips[32].insertAdjacentHTML('beforeend','<div class="button" data-building="Storage" data-buildID="15">storage</div>');
   updateLogs("The crazy mechanic came up with an even more ambitious project, allowing you to process food from farms");
@@ -354,6 +375,7 @@ function checkKeep () {
     }
     separators[7].insertAdjacentHTML('beforeend', '<div class="button" data-building="Keep" data-buildID="16">keep</div>');
     setTimeout(function() {updateLogs("With all these people now following you, better accomodations are in order");}, 500);
+    updateButtonList();
   }
 }
 
@@ -372,5 +394,66 @@ function checkMill () {
   if (buildCurr[14] == buildReq[14]) {
     strips[31].insertAdjacentHTML('beforeend', '<div class="button" data-building="Mill" data-buildID="14">mill</div>');
     updateButtonList();
+  }
+}
+
+function resDisplay (set, location) {
+  for (var i = resNr; i >= 0; --i) {
+    if (set[i] > 0) {
+      var toInsert = '<div class="supply"><div class="type">' + resNames[i] + ':</div><div class="quantity" data-resource="' + resNames[i] + '">' + set[i] + '</div></div>';
+      location.insertAdjacentHTML('afterbegin', toInsert);
+    }
+  }
+}
+
+function clearParent (parent) {
+  while (parent.hasChildNodes()) {
+    parent.removeChild(parent.lastChild);
+  }
+}
+
+function checkReq (idx) {
+  if (buildCurr[idx] != buildReq[idx]) {
+    return false;
+  }
+  for (var i = 0; i < resNr; ++i) {
+    if (stores[i] < resReq[idx][i]) {
+      return false;
+    }
+  }
+  return true;
+}
+/*
+BuildID building buildReq
+
+Screen 1
+0 campfire 0
+1 crafter 2
+2 fletcher 2
+3 mechanic 2
+4 carpenter 1
+16 keep 4
+5 inner wall 1
+
+Screen 2
+6 smokehouse 3
+7 hunter 2
+8 forager 2
+9 trapper 2
+10 leatherworker 3
+11 hut 1
+
+Screen 3
+12 farm 2
+13 fisher 2
+14 mill 3
+15 storage 2
+*/
+
+
+//cheats
+function weAreFull () {
+  for (var i = 0; i < resNr; ++i) {
+    stores[i] = stores[7];
   }
 }

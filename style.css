@@ -7,6 +7,8 @@ body {
 
 html {
   height: 100%;
+  user-select: none;
+  font-family: "Trebuchet MS", sans-serif;
 }
 
 .wrapper {
