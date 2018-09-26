@@ -1,5 +1,5 @@
 # The-Campfire
-  This is a project for the ITBrainiacs program in which I attempted to create an unfolding web game. Unfolding, in this case, refers to the fact that the whole game starts with just a single button and some text and then more and more of the story and options get revealed as the player progresses. 
+  This is a project for the ITBrainiacs program in which I attempted to create an unfolding web game after being inspired by "A Dark Room". Unfolding, in this case, refers to the fact that the whole game starts with just a single button and some text and then more and more of the story and options get revealed as the player progresses. 
 
   The whole logic behind the game is written in JavaScript, which not only handles the resources and the actions of the player but also inserts the HTML of each unlocked option as it is unlocked in order to avoid as much as possible the issue of people looking into the elements of the page to see what is going to to happen before it does. Each button in the game represents a building and each building has a certain requirement in order to show up (based on which buildings are already built) and a certain resource cost in order to be built. Moreover, each building unlocks more pieces of the story and gives the player a better idea of the world around the seemingly random buildings being built.
   
